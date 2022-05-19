@@ -219,11 +219,11 @@ namespace WebAPI_Nwind.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_DetallesMovimientos_Movimientos1");
 
-                entity.HasOne(d => d.Product)
+                /*entity.HasOne(d => d.Product)
                     .WithMany(p => p.Movementdetails)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_DetallesMovimientos_products1");
+                    .HasConstraintName("fk_DetallesMovimientos_products1");*/
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -254,7 +254,7 @@ namespace WebAPI_Nwind.Data
 
                 entity.Property(e => e.UnitPrice).HasDefaultValueSql("'0'");
 
-                entity.HasOne(d => d.Category)
+                /*entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK_Products_Categories");
@@ -268,7 +268,7 @@ namespace WebAPI_Nwind.Data
                 entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.SupplierId)
-                    .HasConstraintName("FK_Products_Suppliers");
+                    .HasConstraintName("FK_Products_Suppliers");*/
             });
 
             modelBuilder.Entity<Supplier>(entity =>
@@ -341,11 +341,11 @@ namespace WebAPI_Nwind.Data
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
-                entity.HasOne(d => d.Product)
+                /*entity.HasOne(d => d.Product)
                     .WithMany(p => p.Warehouseproducts)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_WarehouseProducts_products1");
+                    .HasConstraintName("fk_WarehouseProducts_products1");*/
 
                 entity.HasOne(d => d.Warehouse)
                     .WithMany(p => p.Warehouseproducts)

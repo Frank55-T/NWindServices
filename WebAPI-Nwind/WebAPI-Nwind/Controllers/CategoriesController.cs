@@ -21,6 +21,68 @@ namespace WebAPI_Nwind.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        [Route("movimientos")]
+        public IEnumerable<Object> GetCategoriesMovements(int IdEmpleado)
+        {
+            return _context.Categories
+                
+                .Select(c => new
+                {
+                    Id = c.CategoryId,
+                    Category = c.CategoryName
+                })
+                
+                .Join(_context.Products,
+                    c => c.Id,
+                    p => p.CategoryId,
+                    (c, p) => new
+                    {
+                        c.Id,
+                        c.Category,
+                        p.ProductId
+                    }
+                )
+                .Join(_context.Movementdetails,
+                    p => p.ProductId,
+                    md => md.ProductId,
+                    (p, md)=> new
+                    {
+                        p.Id,
+                        p.Category,
+                        md.MovementId
+                    }
+                )
+                .Join(_context.Movements,
+                    md => md.MovementId,
+                    m => m.MovementId,
+                    (md, m) => new
+                    {
+                        md.Id,
+                        md.Category,
+                        m.EmployeeId,
+                        m.Type
+                    }
+                )
+                .Where(o => 
+                    o.EmployeeId == IdEmpleado &&
+                    o.Type == "VENTA"
+                )
+                .GroupBy(o => new { o.Id, o.Category } )
+                .Select( o => new
+                {
+                    Id = o.Key.Id,
+                    Category = o.Key.Category,
+                    Movimientos=o.Count()
+                })
+                .OrderBy(o=> o.Id)
+                
+                
+                //.GroupBy(c => c.Id)
+                .AsEnumerable();
+        }
+
+
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()

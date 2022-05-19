@@ -7,8 +7,8 @@ namespace WebAPI_Nwind.Models
     {
         public Product()
         {
-            Movementdetails = new HashSet<Movementdetail>();
-            Warehouseproducts = new HashSet<Warehouseproduct>();
+            //Movementdetails = new HashSet<Movementdetail>();
+            //Warehouseproducts = new HashSet<Warehouseproduct>();
         }
 
         public int ProductId { get; set; }
@@ -20,10 +20,10 @@ namespace WebAPI_Nwind.Models
         public string? PhotoPath { get; set; }
         public int CompanyId { get; set; }
 
-        public virtual Category? Category { get; set; }
+        /*public virtual Category? Category { get; set; }
         public virtual Company Company { get; set; } = null!;
         public virtual Supplier? Supplier { get; set; }
         public virtual ICollection<Movementdetail> Movementdetails { get; set; }
-        public virtual ICollection<Warehouseproduct> Warehouseproducts { get; set; }
+        public virtual ICollection<Warehouseproduct> Warehouseproducts { get; set; }*/
     }
 }

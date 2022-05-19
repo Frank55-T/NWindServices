@@ -46,7 +46,7 @@ namespace WebAPI_Nwind.Controllers
                     m => m.MovementId,
                     (md, m) => new
                     {
-                        md.Producto,
+                        Poducto=md.Producto,
                         md.Nombre,
                         md.Cantidad,
                         m.Date,
@@ -60,6 +60,56 @@ namespace WebAPI_Nwind.Controllers
                 );
                 
                 
+        }
+
+        [HttpGet]
+        [Route("salesbyear")]
+        public IEnumerable<Object> GetSalesByYar(int year)
+        {
+            System.Globalization.DateTimeFormatInfo mfi = new
+            System.Globalization.DateTimeFormatInfo();
+            //string strMonthName = mfi.GetMonthName(8).ToString();
+
+            return _context.Products
+                .Join(
+                    _context.Movementdetails,
+                    p => p.ProductId,
+                    md => md.ProductId,
+                    (p, md) => new
+                    {
+                        Producto = p.ProductId,
+                        Movimiento = md.MovementId,
+                    }
+                )
+                .Join(
+                    _context.Movements,
+                    md => md.Movimiento,
+                    m => m.MovementId,
+                    (md, m) => new
+                    {
+                        Poducto = md.Producto,
+                        Dia = m.Date.Day,
+                        Mes = m.Date.Month,
+                        Anio = m.Date.Year,
+                        Tipo = m.Type,
+                        Compania = m.CompanyId
+                    }
+                )
+                .Where(m => m.Anio == year
+                    && m.Tipo == "VENTA"
+                    && m.Compania == 1
+                )
+                .GroupBy(o => new {o.Dia, o.Mes, o.Compania})
+                .Select(o => new
+                {
+                    Company = o.Key.Compania,
+                    Fecha = mfi.GetMonthName(o.Key.Mes)+ "-"+ o.Key.Dia,
+                    //Mes = o.Key.Mes,
+                    Cantidad = o.Count()
+                })
+                ;
+
+
         }
 
         // GET: api/Products
